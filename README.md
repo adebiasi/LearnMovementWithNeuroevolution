@@ -11,3 +11,4 @@ Next steps:
 - [ ] Use genetic algorithms to vary the body of the robot (length, rotation speed) 
 - [ ] ... include some handicap: only clockwise rotation
 - [ ] visualize the neural network as graph 
+- [ ] For the best robot show all the pairs input-output in a tabular form
