@@ -1,22 +1,29 @@
 # LearnMovementWithNeuroevolution
-Using neuroevolution to teach to simple "robot" how to move.
+This project is inspired by the video [Coding Challenge #100: Neuroevolution Flappy Bird](https://www.youtube.com/watch?v=c6y21FkaUqw). 
 
-This project was inspired by the video [Coding Challenge #100: Neuroevolution Flappy Bird](https://www.youtube.com/watch?v=c6y21FkaUqw). 
+## Project goal
+The goal is to teach the robot how to reach a specific target, using the neuroevolution. 
 
 ## Robot body
-
 The robot is composed by the main body (the big circle) connected by a segment to the hook (the small circle). The body and the hook can have two states: free and blocked. 
 The robot can rotate (in both directions) pivoting on the blocked part, given that the other part is free.
 
-IMAGE
+IMAGE - robot moving
 
-The goal is to teach the robot how to reach a specific target, using the neuroevolution. The robot brain should take as input the current state of the robot, that is the current state of the body and the hook. The output should be the possible next actions to achieve the goal: swich the state of the body, switch the state of the hook, clockwise rotation, couter-clockwise rotation. 
+This in not enough. The robot brain needs information about the position of the target. To do so, the robt has a visual sensor that sends a signal if the target is inside its field of view. The sensor can have two states: detected, not_detected.
 
-This in not enough. The robot brain needs information about the position of the target.
+IMAGE - robot sensor
+
+To achieve the goal, the robot brain takes as input the current state of the robot, that is the state of the body, the state of the hook, and the state of the visual sensor. As output the possible next actions to achieve the goal: switch the state of the body, switch the state of the hook, clockwise rotation, couter-clockwise rotation. 
 
 
 ## Robot brain
 
+The robot brain is a simple neural network with 3 input nodes, 3 hidden nodes, and 4 output nodes.
+
+## Training
+
+## Moving robot
 
 ## Next steps
 - [ ] Try different neural network configurations (different number of hidden nodes)
