@@ -28,7 +28,7 @@ let runBestButton;
 let trainButton;
 let userButton;
 
-let gif;
+// let gif;
 let recording = false;
 
 function setup() {
@@ -41,7 +41,7 @@ function setup() {
     colors[6] = color(0, 255, 255);  // Ciano
     colors[7] = color(255, 165, 0);  // Arancione (sostituito il nero)
 
-    let canvas = createCanvas(600, 400);
+    let canvas = createCanvas(1000, 800);
     canvas.parent('canvascontainer');
     initPosition = createVector(width / 2, height / 2);
     // Access the interface elements
@@ -72,10 +72,10 @@ function setup() {
         allRobots[i] = robot;
     }
 
-    gif = new GIF({
-        workers: 2,
-        quality: 10,
-    });
+    // gif = new GIF({
+    //     workers: 2,
+    //     quality: 10,
+    // });
 }
 
 function colorToRgbString(p5Color) {
@@ -92,33 +92,26 @@ function keyPressed() {
     if (key === 'x') {
         userCmds[1] = true;
     }
-    if (key === 'c') {
+    if (key === 'n') {
         userCmds[2] = true;
     }
-    if (key === 'v') {
+    if (key === 'm') {
         userCmds[3] = true;
     }
 
     if (key === 'R' || key === 'r') {
-        if (!recording) {
-            console.log("START RECORDING")
-            recording = true;
-            // Inizia a registrare
-        } else {
-            console.log("STOP RECORDING")
-            recording = false;
-            // Ferma la registrazione e salva la GIF
-            gif.on('finished', function (blob) {
-                saveAs(blob, 'your_animation.gif');
-            });
-            gif.render();
-        }
+        saveGif('mySketch', 10);
     }
 }
 
 function userMode() {
     mode = 0;
-    userRobot = new Robot(initPosition, [3, 8, 4], 0);
+    userRobot = new Robot(initPosition, [3, 1, 4], 0);
+    userRobot.length = 160
+    userRobot.robotSize = 40
+    userRobot.armSize = 24
+    userRobot.eye.size = 48
+
 
 }
 
@@ -146,9 +139,9 @@ function isTrainMode() {
 }
 
 function saveBestCreatures() {
-
+    currBestRobot = null;
     // Which is the best robot?
-    let tempBestRobots = new Array(numDiffCreatures);
+    tempBestRobots = new Array(numDiffCreatures);
     for (let i = 0; i < activeRobots.length; i++) {
         let n = activeRobots[i].brain.hidden_nodes;
         if (tempBestRobots[n - 1] == null) {
@@ -160,13 +153,20 @@ function saveBestCreatures() {
         if (bestRobot == null) {
             bestRobot = activeRobots[i].clone();
         }
+        if (currBestRobot == null) {
+            currBestRobot = activeRobots[i].clone();
+        }
         if (activeRobots[i].score > tempBestRobots[n - 1].score) {
             tempBestRobots[n - 1] = activeRobots[i].clone();
+            if (activeRobots[i].score > currBestRobot.score) {
+                currBestRobot = activeRobots[i].clone();
+            }
             if (activeRobots[i].score > bestRobots[n - 1].score) {
                 bestRobots[n - 1] = activeRobots[i].clone();
                 if (activeRobots[i].score > bestRobot.score) {
                     bestRobot = activeRobots[i].clone();
                 }
+
             }
         }
     }
@@ -200,10 +200,6 @@ function mouseClicked() {
 function draw() {
     background(0);
 
-    if (recording) {
-        gif.addFrame(canvas, {delay: 100});
-    }
-
     // Should we speed up cycles per frame
     let cycles = speedSlider.value();
     speedSpan.html(cycles);
@@ -212,11 +208,10 @@ function draw() {
     framerateSpan.html(frameR);
     frameRate(frameR);
 
-    console.log("mode: " + mode)
-
-
     if (isBestMode()) {
-        thinkAndMoveCreatures(bestRobots, target);
+        thinkAndMoveCreatures([currBestRobot], target);
+        // thinkAndMoveCreatures(bestRobots, target);
+
     } else if (isTrainMode()) {
         // How many times to advance the game
         for (let n = 0; n < cycles; n++) {
@@ -232,13 +227,13 @@ function draw() {
     // Draw everything!
     target.show();
     if (isBestMode()) {
-
-        showCreatures(bestRobots);
+        showCreatures([currBestRobot])
+        // showCreatures(bestRobots);
     } else if (isTrainMode()) {
 
         showCreatures(activeRobots);
         // If we're out of robots go to the next generation
-        if (counter > 39) {
+        if (counter > 119) {
             calculateScores(activeRobots, target);
             saveBestCreatures();
             nextGeneration()
@@ -250,7 +245,6 @@ function draw() {
         showCreatures([userRobot]);
 
     }
-
 
     userCmds = [false, false, false, false];
 }

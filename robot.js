@@ -51,10 +51,12 @@ class Creature {
 
 }
 
+const EYE_SIZE = 12;
+
 class Eye {
     constructor(fov, pos, angle) {
         this.fov = radians(fov);
-        this.size = 12;
+        this.size = EYE_SIZE;
         this.x1 = this.size * cos(PI / 2 - this.fov / 2);
         this.y1 = this.size * sin(PI / 2 - this.fov / 2);
         this.x2 = this.size * cos(PI / 2 + this.fov / 2);
@@ -81,20 +83,31 @@ class Eye {
     }
 }
 
+const ROBOT_LENGTH = 40;
+
+const EYE_FOV = 35;
+
+const ROBOT_SIZE = 10;
+
+const ARM_SIZE = 6;
+
+const DELTA_ANGLE = 0.2;
+
 class Robot extends Creature {
 
     initBody(pos) {
         this.angle = random(0, 0);
-        this.size = 20;
-        this.eye = new Eye(35, pos, 0);
+        this.length = ROBOT_LENGTH;
+        // this.eye = new Eye(EYE_FOV, pos, -PI/2);
+        this.eye = new Eye(EYE_FOV, pos, 0);
         this.pos = pos;
         this.startPos = pos;
-        let lOffset = createVector(this.size / 2 * cos(this.angle), (this.size / 2) * sin(this.angle));
-        this.lArmPos = p5.Vector.add(this.pos, lOffset);
-        this.rArmPos = p5.Vector.sub(this.pos, lOffset);
-        // this.targetFound = false;
-        this.lArmState = false;
-        this.rArmState = false;
+        // this.armPos = createVector(this.size * cos(this.angle), (this.size) * sin(this.angle));
+        this.robotState = false;
+        this.armState = false;
+        
+        this.robotSize = ROBOT_SIZE
+        this.armSize = ARM_SIZE
     }
 
 
@@ -109,33 +122,26 @@ class Robot extends Creature {
     }
 
     show() {
+        push()
+        translate(this.pos.x, this.pos.y)
+        this.robotState ? fill(255) : fill(0);
+        circle(0, 0, this.robotSize);
 
+        push()
+        rotate(this.angle)
         stroke(colors[this.brain.hidden_nodes - 1]);
-        line(this.lArmPos.x, this.lArmPos.y, this.rArmPos.x, this.rArmPos.y);
+        line(0, 0, this.length, 0);
 
-        this.lArmState ? fill(255) : fill(0);
-        circle(this.lArmPos.x, this.lArmPos.y, 5);
-
-        this.rArmState ? fill(255) : fill(0);
-        circle(this.rArmPos.x, this.rArmPos.y, 5);
-
-        this.eye.draw(this.pos, this.angle);
+        push()
+        translate(this.length, 0)
+        this.armState ? fill(255) : fill(0);
+        circle(0, 0, this.armSize);
+        pop()
+        pop()
+        this.eye.draw(createVector(0, 0), this.angle);
+        pop()
     }
 
-    //
-    // drawEye(pos, angle, fov) {
-    //     this.eye.targetFound ? fill(255) : fill(0);
-    //
-    //     let vertex2X = 12 * cos(PI / 2 - fov / 2);
-    //     let vertex2Y = 12 * sin(PI / 2 - fov / 2);
-    //     let vertex3X = 12 * cos(PI / 2 + fov / 2);
-    //     let vertex3Y = 12 * sin(PI / 2 + fov / 2);
-    //     push();
-    //     translate(pos.x, pos.y);
-    //     rotate(PI + angle);
-    //     triangle(0, 0, vertex2X, vertex2Y, vertex3X, vertex3Y);
-    //     pop()
-    // }
 
     think() {
 
@@ -144,20 +150,9 @@ class Robot extends Creature {
         let cmds = [false, false, false, false];
 
 
-        // let angleToTarget = atan2(targetPos.y - this.pos.y, targetPos.x - this.pos.x) + PI;
-        //
-        // // Calcola la differenza di angolo
-        // let angleDifference = angleToTarget - this.angle;
-        // let normalizedAngle = (angleDifference % TWO_PI + TWO_PI) % TWO_PI;
-        //
-        // // inputs[0] = map(normalizedAngle, 0, TWO_PI, 0, 1);
-        // // inputs[1] = +this.lArmState;
-        // // inputs[2] = +this.rArmState;
-
-        // inputs[0] = +(normalizedAngle > PI)
         inputs[0] = +(this.eye.targetFound)
-        inputs[1] = +this.lArmState;
-        inputs[2] = +this.rArmState;
+        inputs[1] = +this.robotState;
+        inputs[2] = +this.armState;
 
 
         // Get the outputs from the network
@@ -181,37 +176,36 @@ class Robot extends Creature {
 
     move(cmds, targetPos) {
 
+
         if (cmds[0]) {
-            this.lArmState = !this.lArmState;
+            this.armState = !this.armState;
         }
 
         if (cmds[1]) {
-            this.rArmState = !this.rArmState;
+            this.robotState = !this.robotState;
         }
         if (cmds[2]) {
-            if ((this.lArmState && !this.rArmState) || (!this.lArmState && this.rArmState)) {
-                this.angle += 0.5;
+            if ((this.robotState && !this.armState)) {
+                this.angle += DELTA_ANGLE;
+            }
+            if (!this.robotState && this.armState) {
+                let armPos = p5.Vector.add(this.pos, createVector(this.length * cos(this.angle), (this.length) * sin(this.angle)));
+                this.angle += DELTA_ANGLE;
+                this.pos = p5.Vector.add(armPos, createVector(this.length * cos(this.angle + PI), (this.length) * sin(this.angle + PI)));
             }
         }
         if (cmds[3]) {
-            if ((this.lArmState && !this.rArmState) || (!this.lArmState && this.rArmState)) {
-                this.angle -= 0.5;
+            if (this.robotState && !this.armState) {
+                this.angle -= DELTA_ANGLE;
+            }
+            if (!this.robotState && this.armState) {
+                let armPos = p5.Vector.add(this.pos, createVector(this.length * cos(this.angle), (this.length) * sin(this.angle)));
+                this.angle -= DELTA_ANGLE;
+                this.pos = p5.Vector.add(armPos, createVector(this.length * cos(this.angle + PI), (this.length) * sin(this.angle + PI)));
+
             }
         }
-
-
-        if (this.lArmState && !this.rArmState) {
-            this.rArmPos = createVector(this.size * cos(this.angle + PI), this.size * sin(this.angle + PI)).add(this.lArmPos);
-            this.pos = p5.Vector.add(this.rArmPos, this.lArmPos).div(2);
-
-        }
-        if (!this.lArmState && this.rArmState) {
-            this.lArmPos = createVector(this.size * cos(this.angle), this.size * sin(this.angle)).add(this.rArmPos);
-            this.pos = p5.Vector.add(this.rArmPos, this.lArmPos).div(2);
-        }
-
         this.eye.updateVision(this.pos, this.angle, targetPos);
-
     }
 
 
