@@ -15,10 +15,10 @@ This in not enough. The robot brain needs information about the position of the 
 
 ![IMAGE - robot sensor
 ](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/RobotEye.gif)
-To achieve the goal, the robot brain takes as input the current state of the robot, that is the state of the body, the state of the hook, and the state of the visual sensor. As output the possible next actions to achieve the goal: switch the state of the body, switch the state of the hook, clockwise rotation, couter-clockwise rotation. 
-
 
 ## Robot brain
+
+To achieve the goal, the robot brain takes as input the current state of the robot, that is the state of the body, the state of the hook, and the state of the visual sensor. As output the possible next actions to achieve the goal: switch the state of the body, switch the state of the hook, clockwise rotation, couter-clockwise rotation. 
 
 The robot brain is a simple neural network with 3 input nodes, 3 hidden nodes, and 4 output nodes.
 
