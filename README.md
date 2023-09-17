@@ -11,7 +11,7 @@ The robot can rotate (in both directions) pivoting on the blocked part, given th
 ![Alt Text](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/RobotMovement.gif)
 
 
-This in not enough. The robot brain needs information about the position of the target. To do so, the robt has a visual sensor that sends a signal if the target is inside its field of view. The sensor can have two states: detected, not_detected.
+This is not enough. The robot brain needs information about the position of the target. To do so, the robot has a visual sensor that sends a signal if the target is inside its field of view. The sensor can have two states: detected, not_detected.
 
 ![IMAGE - robot sensor
 ](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/RobotEye.gif)
@@ -19,19 +19,26 @@ This in not enough. The robot brain needs information about the position of the 
 ## Robot brain
 
 To achieve the goal, the robot brain takes as input the current state of the robot, that is the state of the body, the state of the hook, and the state of the visual sensor. As output the possible next actions to achieve the goal: switch the state of the body, switch the state of the hook, clockwise rotation, couter-clockwise rotation. 
+All inputs and outputs are booleans.
 
 The robot brain is a simple neural network with 3 input nodes, 3 hidden nodes, and 4 output nodes.
 
 ## Training
 
-## Moving robot
+The population is composed by 2000 robots. Each one has random weights associated to its neural network.
+Every generation has to reach a random target position.
+After N steps the algorithm selects the best robots to for the next generation. Some mutations to the weights may occur.
 
+## Moving robot
+This is the best robot selected after 20 generations:
 ![IMAGE - final
 ](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/finalTraining.gif)
 
+Sometime the process does not produce a goot result:
 ![IMAGE - intermediate
 ](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/intermediateTraining.gif)
 
+It is interesting to see how the moving style of the robot changes if the vision sensor is rotated during the training.
 ![IMAGE - fronteye
 ](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/frontEye.gif)
 ## Next steps
