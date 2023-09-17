@@ -26,6 +26,14 @@ The robot brain is a simple neural network with 3 input nodes, 3 hidden nodes, a
 
 ## Moving robot
 
+![IMAGE - final
+](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/finalTraining.gif)
+
+![IMAGE - intermediate
+](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/intermediateTraining.gif)
+
+![IMAGE - fronteye
+](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/frontEye.gif)
 ## Next steps
 - [ ] Try different neural network configurations (different number of hidden nodes)
 - [ ] Try different settings (number, position, orientation) of the eyes.
