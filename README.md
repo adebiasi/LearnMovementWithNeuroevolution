@@ -8,16 +8,17 @@ The goal is to teach the robot how to reach a specific target, using the neuroev
 The robot is composed by the main body (the big circle) connected by a segment to the hook (the small circle). The body and the hook can have two states: free and blocked. 
 The robot can rotate (in both directions) pivoting on the blocked part, given that the other part is free.
 
-IMAGE - robot moving
+![Alt Text](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/RobotMovement.gif)
+
 
 This in not enough. The robot brain needs information about the position of the target. To do so, the robt has a visual sensor that sends a signal if the target is inside its field of view. The sensor can have two states: detected, not_detected.
 
-IMAGE - robot sensor
-
-To achieve the goal, the robot brain takes as input the current state of the robot, that is the state of the body, the state of the hook, and the state of the visual sensor. As output the possible next actions to achieve the goal: switch the state of the body, switch the state of the hook, clockwise rotation, couter-clockwise rotation. 
-
+![IMAGE - robot sensor
+](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/RobotEye.gif)
 
 ## Robot brain
+
+To achieve the goal, the robot brain takes as input the current state of the robot, that is the state of the body, the state of the hook, and the state of the visual sensor. As output the possible next actions to achieve the goal: switch the state of the body, switch the state of the hook, clockwise rotation, couter-clockwise rotation. 
 
 The robot brain is a simple neural network with 3 input nodes, 3 hidden nodes, and 4 output nodes.
 
