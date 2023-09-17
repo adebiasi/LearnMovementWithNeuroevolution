@@ -42,11 +42,13 @@ It is interesting to see how the moving style of the robot changes if the vision
 ![IMAGE - fronteye
 ](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/frontEye.gif)
 ## Next steps
-- [ ] Try different neural network configurations (different number of hidden nodes)
-- [ ] Try different settings (number, position, orientation) of the eyes.
-- [ ] Think about the possibility to have a dedicated neural network only for the eyes: eyes data as input and (maybe) one output. The output is the input of the other neural network.
+- [x] Try different neural network configurations (different number of hidden nodes)
+- [ ] Try different settings of the eyes.
+     - [ ] Number of eyes
+     - [ ] position
+     - [x] orientation
 - [ ] What if the previous state attributes are added to the input of NN?
 - [ ] Use genetic algorithms to vary the body of the robot (length, rotation speed) 
-- [ ] ... include some handicap: only clockwise rotation
-- [ ] visualize the neural network as graph 
+    - [ ] ... include some handicap gene: only clockwise rotation
+- [ ] Visualize the neural network as graph 
 - [ ] For the best robot show all the pairs input-output of the NN in a tabular form
