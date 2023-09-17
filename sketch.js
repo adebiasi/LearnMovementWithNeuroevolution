@@ -66,16 +66,13 @@ function setup() {
     mode = 2;
     // Create a population
     for (let i = 0; i < totalPopulation; i++) {
-        let robot = new Robot(initPosition, [3, (i % numDiffCreatures) + 1, 4], 10);
+        // let robot = new Robot(initPosition, [3, (i % numDiffCreatures) + 1, 4], 10);
+        let robot = new Robot(initPosition, [3, 3, 4], 10);
 
         activeRobots[i] = robot;
         allRobots[i] = robot;
     }
 
-    // gif = new GIF({
-    //     workers: 2,
-    //     quality: 10,
-    // });
 }
 
 function colorToRgbString(p5Color) {
@@ -111,6 +108,7 @@ function userMode() {
     userRobot.robotSize = 40
     userRobot.armSize = 24
     userRobot.eye.size = 48
+    userRobot.eye.updateEyeCoords();
 
 
 }
@@ -233,7 +231,7 @@ function draw() {
 
         showCreatures(activeRobots);
         // If we're out of robots go to the next generation
-        if (counter > 119) {
+        if (counter > 139) {
             calculateScores(activeRobots, target);
             saveBestCreatures();
             nextGeneration()

@@ -57,12 +57,16 @@ class Eye {
     constructor(fov, pos, angle) {
         this.fov = radians(fov);
         this.size = EYE_SIZE;
+        this.updateEyeCoords();
+        this.angle = angle;
+        this.targetFound = false;
+    }
+
+    updateEyeCoords() {
         this.x1 = this.size * cos(PI / 2 - this.fov / 2);
         this.y1 = this.size * sin(PI / 2 - this.fov / 2);
         this.x2 = this.size * cos(PI / 2 + this.fov / 2);
         this.y2 = this.size * sin(PI / 2 + this.fov / 2);
-        this.angle = angle;
-        this.targetFound = false;
     }
 
     draw(robotPos, robotAngle) {
@@ -77,29 +81,30 @@ class Eye {
     updateVision(robotPos, robotAngle, targetPos) {
         let absAngleToTarget = atan2(targetPos.y - robotPos.y, targetPos.x - robotPos.x) + PI;
         let absDirection = ((this.angle + robotAngle + PI / 2) % TWO_PI + TWO_PI) % TWO_PI;
-        let angleDifference = absDirection - absAngleToTarget;
+        let angleDifference = min(absDirection - absAngleToTarget,);
         let normalizedAngleDifference = (abs(angleDifference) % TWO_PI + TWO_PI) % TWO_PI;
-        this.targetFound = (normalizedAngleDifference < this.fov / 2);
+
+        this.targetFound = (normalizedAngleDifference < this.fov / 2) || (TWO_PI - normalizedAngleDifference < this.fov / 2);
     }
 }
 
 const ROBOT_LENGTH = 40;
 
-const EYE_FOV = 35;
+const EYE_FOV = 45;
 
 const ROBOT_SIZE = 10;
 
 const ARM_SIZE = 6;
 
-const DELTA_ANGLE = 0.2;
+const DELTA_ANGLE = 0.15;
 
 class Robot extends Creature {
 
     initBody(pos) {
         this.angle = random(0, 0);
         this.length = ROBOT_LENGTH;
-        // this.eye = new Eye(EYE_FOV, pos, -PI/2);
-        this.eye = new Eye(EYE_FOV, pos, 0);
+        this.eye = new Eye(EYE_FOV, pos, -PI/2);
+        // this.eye = new Eye(EYE_FOV, pos, 0);
         this.pos = pos;
         this.startPos = pos;
         // this.armPos = createVector(this.size * cos(this.angle), (this.size) * sin(this.angle));
