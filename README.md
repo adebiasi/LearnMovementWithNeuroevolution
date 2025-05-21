@@ -1,54 +1,85 @@
 # LearnMovementWithNeuroevolution
-This project is inspired by the video [Coding Challenge #100: Neuroevolution Flappy Bird](https://www.youtube.com/watch?v=c6y21FkaUqw). 
 
-## Project goal
-The goal is to teach the robot how to reach a specific target, using the neuroevolution. 
+This project is inspired by [Coding Challenge #100: Neuroevolution Flappy Bird](https://www.youtube.com/watch?v=c6y21FkaUqw) by Daniel Shiffman.
 
-## Robot body
-The robot is composed by the main body (the big circle) connected by a segment to the hook (the small circle). The body and the hook can have two states: free and blocked. 
-The robot can rotate (in both directions) pivoting on the blocked part, given that the other part is free.
+## 🚀 Project Goal
 
-![Alt Text](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/RobotMovement.gif)
+The objective is to train a robot to reach a target using **neuroevolution**—a combination of neural networks and genetic algorithms.
 
+## 🤖 Robot Structure
 
-This is not enough. The robot brain needs information about the position of the target. To do so, the robot has a visual sensor that sends a signal if the target is inside its field of view. The sensor can have two states: detected, not_detected.
+The robot consists of:
 
-![IMAGE - robot sensor
-](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/RobotEye.gif)
+- A **main body** (large circle)
+- A **hook** (small circle)
 
-## Robot brain
+These are connected by a segment. Both the body and the hook can be in two states:
 
-To achieve the goal, the robot brain takes as input the current state of the robot, that is the state of the body, the state of the hook, and the state of the visual sensor. As output the possible next actions to achieve the goal: switch the state of the body, switch the state of the hook, clockwise rotation, couter-clockwise rotation. 
-All inputs and outputs are booleans.
+- `free`
+- `blocked`
 
-The robot brain is a simple neural network with 3 input nodes, 3 hidden nodes, and 4 output nodes.
+The robot can rotate by pivoting around the blocked part, provided the other part is free.
 
-## Training
+![Robot Movement](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/RobotMovement.gif)
 
-The population is composed by 2000 robots. Each one has random weights associated to its neural network.
-Every generation has to reach a random target position.
-After N steps the algorithm selects the best robots to for the next generation. Some mutations to the weights may occur.
+To effectively navigate toward the target, the robot is equipped with a **visual sensor**. This sensor detects whether the target is within its field of view and has two states:
 
-## Moving robot
-This is the best robot selected after 20 generations:
-![IMAGE - final
-](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/finalTraining.gif)
+- `detected`
+- `not_detected`
 
-Sometime the process does not produce a goot result:
-![IMAGE - intermediate
-](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/intermediateTraining.gif)
+![Robot Sensor](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/RobotEye.gif)
 
-It is interesting to see how the moving style of the robot changes if the vision sensor is rotated during the training.
-![IMAGE - fronteye
-](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/frontEye.gif)
-## Next steps
-- [x] Try different neural network configurations (different number of hidden nodes)
-- [ ] Try different settings of the eyes.
-     - [ ] Number of eyes
-     - [ ] position
-     - [x] orientation
-- [ ] What if the previous state attributes are added to the input of NN?
-- [ ] Use genetic algorithms to vary the body of the robot (length, rotation speed) 
-    - [ ] ... include some handicap gene: only clockwise rotation
-- [ ] Visualize the neural network as graph 
-- [ ] For the best robot show all the pairs input-output of the NN in a tabular form
+## 🧠 Robot Brain
+
+The robot's brain is a simple neural network with:
+
+- **3 input nodes**: state of the body, state of the hook, and state of the visual sensor
+- **3 hidden nodes**
+- **4 output nodes**: possible actions
+
+All input and output values are boolean. The possible actions are:
+
+- Toggle body state
+- Toggle hook state
+- Rotate clockwise
+- Rotate counter-clockwise
+
+## 🧬 Training via Neuroevolution
+
+- **Population size**: 2000 robots
+- Each robot starts with random neural network weights
+- A new target is set each generation
+- After a fixed number of steps, the top-performing robots are selected for reproduction
+- Offspring may undergo **random mutations** to their neural weights
+
+## 🎯 Results
+
+Here’s the best-performing robot after 20 generations:
+
+![Best Robot](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/finalTraining.gif)
+
+Occasionally, the evolution does not yield a good result:
+
+![Intermediate Training](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/intermediateTraining.gif)
+
+It's also interesting to observe how movement strategies change when the visual sensor's orientation is modified:
+
+![Front-Facing Eye](https://github.com/adebiasi/LearnMovementWithNeuroevolution/blob/main/imgs/frontEye.gif)
+
+## 🔮 Future Improvements
+
+- [x] Try different neural network architectures (e.g. varying hidden node count)
+- [ ] Experiment with visual sensor settings:
+  - [ ] Number of eyes
+  - [ ] Eye positioning
+  - [x] Eye orientation
+- [ ] Include previous state attributes as inputs to the neural network
+- [ ] Apply genetic algorithms to evolve the robot’s physical traits (e.g. segment length, rotation speed)
+  - [ ] Introduce constraints like one-directional rotation only
+- [ ] Visualize the neural network as a graph
+- [ ] Display the neural network’s input-output mapping in tabular form for the best robot
+
+---
+
+Feel free to fork the project or contribute ideas!
+
