@@ -2,9 +2,32 @@
 
 This project is inspired by [Coding Challenge #100: Neuroevolution Flappy Bird](https://www.youtube.com/watch?v=c6y21FkaUqw) by Daniel Shiffman.
 
-## 🚀 Project Goal
+## 🔍 PEAS Description – *LearnMovementWithNeuroevolution*
 
 The objective is to train a robot to reach a target using **neuroevolution**—a combination of neural networks and genetic algorithms.
+
+### 🏆 Performance
+The agent’s performance is evaluated based on its ability to approach a target. The scoring mechanism rewards robots for reducing their distance from the target relative to their starting position. The greater the progress toward the target, the higher the score. Only the best (shortest) distance achieved during an episode is considered, meaning the robot is not penalized for temporarily moving away. This promotes exploratory behavior while still favoring efficient, directed movement.
+
+### 🌍 Environment
+The robot operates in a 2D continuous space. At the beginning of each generation, the robot starts at a fixed point, and a new target is randomly placed within the environment. There are no physical obstacles, but the robot's movement is constrained by internal mechanics—it can rotate only when one part (body or hook) is "blocked" and the other is "free." The environment remains consistent during a generation but changes with each new one due to target repositioning.
+
+### 🦿 Actuators
+The robot has four discrete actions it can perform:
+- **Toggle body state**: Switch the body between ‘free’ and ‘blocked’
+- **Toggle hook state**: Switch the hook between ‘free’ and ‘blocked’
+- **Rotate clockwise**: Rotate the robot around the blocked part in a clockwise direction
+- **Rotate counter-clockwise**: Rotate in the opposite direction
+
+These actions allow the robot to “walk” by alternating states and rotating appropriately.
+
+### 👁️ Sensors
+The robot is equipped with a minimal sensor system:
+- **Body and hook state sensors**: Detect whether each component is currently in the ‘free’ or ‘blocked’ state
+- **Visual sensor**: Detects whether the target is within the robot's current field of view (binary: detected / not detected)
+
+These sensors provide binary input to the robot's neural network, enabling it to make decisions based on its own configuration and the visibility of the goal.
+
 
 ## 🤖 Robot Structure
 
